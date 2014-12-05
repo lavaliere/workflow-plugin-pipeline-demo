@@ -45,9 +45,11 @@ def undeploy(id) {
 
 def runWithServer(body) {
     def id = UUID.randomUUID().toString()
+    def url
+    url = sh 'grep `hostname` /etc/hosts |awk '{print $1}''
     deploy 'target/x.war', id
     try {
-        body.call "http://localhost:8080/${id}/"
+        body.call url + "/${id}/"
     } finally {
         undeploy id
     }
