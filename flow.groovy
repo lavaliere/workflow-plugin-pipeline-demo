@@ -1,18 +1,18 @@
 def devQAStaging() {
     tool name: 'Maven_3', type: 'hudson.tasks.Maven$MavenInstallation'
     stage 'Dev'
-    sh 'mvn install clean package'
+    sh 'mvn clean install package'
     archive 'target/x.war'
 
     stage 'QA'
 
     parallel(longerTests: {
         runWithServer {url ->
-            sh "mvn -o -f sometests/pom.xml test -Durl=${url} -Dduration=30"
+            sh "mvn -f sometests/pom.xml test -Durl=${url} -Dduration=30"
         }
     }, quickerTests: {
         runWithServer {url ->
-            sh "mvn -o -f sometests/pom.xml test -Durl=${url} -Dduration=20"
+            sh "mvn -f sometests/pom.xml test -Durl=${url} -Dduration=20"
         }
     })
     stage name: 'Staging', concurrency: 1
@@ -45,11 +45,9 @@ def undeploy(id) {
 
 def runWithServer(body) {
     def id = UUID.randomUUID().toString()
-    def url
-    url = sh 'grep `hostname` /etc/hosts |awk '{print $1}''
     deploy 'target/x.war', id
     try {
-        body.call url + "/${id}/"
+        body.call "http://localhost:8080/${id}/"
     } finally {
         undeploy id
     }
