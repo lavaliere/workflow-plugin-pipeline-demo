@@ -51,7 +51,7 @@ def runWithServer(body) {
     } finally {
         undeploy id
     } catch(e) {
-        echo 'failed to deploy to test server: ' + e.printStackTrace()
+        echo 'failed to deploy to test server: '
     }
 }
 
