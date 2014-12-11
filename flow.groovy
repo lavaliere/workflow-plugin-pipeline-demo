@@ -48,10 +48,10 @@ def runWithServer(body) {
     deploy 'target/x.war', id
     try {
         body.call "http://localhost:8080/${id}/"
-    } finally {
+    } catch (e) {
+        echo 'Checkpoint feature available in Jenkins Enterprise by CloudBees.'
+    }finally {
         undeploy id
-    } catch(e) {
-        echo 'failed to deploy to test server: '
     }
 }
 
