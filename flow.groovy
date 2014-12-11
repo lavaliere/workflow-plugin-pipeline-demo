@@ -3,7 +3,11 @@ def devQAStaging() {
     stage 'Dev'
     sh 'mvn clean install package'
     archive 'target/x.war'
-
+  try {
+        checkpoint('Archived war')
+    } catch (NoSuchMethodError _) {
+        echo 'Checkpoint feature available in Jenkins Enterprise by CloudBees.'
+    }
     stage 'QA'
 
     parallel(longerTests: {
@@ -27,7 +31,7 @@ def production() {
         echo 'Checkpoint feature available in Jenkins Enterprise by CloudBees.'
     }
     stage name: 'Production', concurrency: 1
-    node('master') {
+    node {
         sh 'curl -I http://localhost:8080/staging/'
         unarchive mapping: ['target/x.war' : 'x.war']
         deploy 'x.war', 'production'
