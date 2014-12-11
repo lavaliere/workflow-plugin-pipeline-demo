@@ -50,6 +50,8 @@ def runWithServer(body) {
         body.call "http://localhost:8080/${id}/"
     } finally {
         undeploy id
+    } catch(e) {
+        echo 'failed to deploy to test server: ' + e.printStackTrace()
     }
 }
 
