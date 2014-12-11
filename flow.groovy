@@ -44,15 +44,7 @@ def undeploy(id) {
 }
 
 def runWithServer(body) {
-    def id = UUID.randomUUID().toString()
-    deploy 'target/x.war', id
-    try {
-        body.call "http://localhost:8080/${id}/"
-    } catch (e) {
-        echo 'Checkpoint feature available in Jenkins Enterprise by CloudBees.'
-    }finally {
-        undeploy id
-    }
+
 }
 
 return this;
