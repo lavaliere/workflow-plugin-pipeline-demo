@@ -24,7 +24,7 @@ def devQAStaging() {
 }
 
 def production() {
-    input message: "Does http://localhost:8080/staging/ look good?"
+    input message: "Does http://localhost:8888/staging/ look good?"
     try {
         checkpoint('Before production')
     } catch (NoSuchMethodError _) {
@@ -32,10 +32,10 @@ def production() {
     }
     stage name: 'Production', concurrency: 1
     node {
-        sh 'curl -I http://localhost:8080/staging/'
+        sh 'curl -I http://localhost:8888/staging/'
         unarchive mapping: ['target/x.war' : 'x.war']
         deploy 'x.war', 'production'
-        echo 'Deployed to http://localhost:8080/production/'
+        echo 'Deployed to http://localhost:8888/production/'
     }
 }
 
