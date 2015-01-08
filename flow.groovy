@@ -33,7 +33,7 @@ def production() {
     stage name: 'Production', concurrency: 1
     node {
         unarchive mapping: ['target/x.war' : 'x.war']
-        deploy 'x.war', 'production'
+        deploy 'target/x.war', 'production'
         echo 'Deployed to http://localhost:8888/production/'
     }
 }
