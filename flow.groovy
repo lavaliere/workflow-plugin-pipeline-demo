@@ -1,7 +1,7 @@
 def devQAStaging() {
     env.PATH="${tool 'Maven 3.x'}/bin:${env.PATH}"
     stage 'Dev'
-    sh 'mvn clean install package'
+    sh 'mvn clean install'
     archive 'target/x.war'
   try {
         checkpoint('Archived war')
